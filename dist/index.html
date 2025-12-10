@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>小红书数据采集</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 32px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .title {
+      font-size: 28px;
+      font-weight: 600;
+      color: #1d1d1f;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #86868b;
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: #1d1d1f;
+      margin-bottom: 8px;
+    }
+
+    select, input[type="text"] {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid #d2d2d7;
+      border-radius: 10px;
+      font-size: 16px;
+      background: #ffffff;
+      transition: all 0.2s ease;
+      -webkit-appearance: none;
+      appearance: none;
+      cursor: pointer;
+    }
+
+    select:focus, input[type="text"]:focus {
+      outline: none;
+      border-color: #007aff;
+      box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+    }
+
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%2386868b' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      padding-right: 44px;
+    }
+
+    .button-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .button {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+    }
+
+    .button-primary {
+      background: #007aff;
+      color: white;
+    }
+
+    .button-primary:hover {
+      background: #0056b3;
+      transform: translateY(-1px);
+    }
+
+    .button-secondary {
+      background: #f2f2f7;
+      color: #007aff;
+    }
+
+    .button-secondary:hover {
+      background: #e5e5ea;
+      transform: translateY(-1px);
+    }
+
+    .button-success {
+      background: #34c759;
+      color: white;
+    }
+
+    .button-success:hover {
+      background: #28a745;
+      transform: translateY(-1px);
+    }
+
+    .button-warning {
+      background: #ff9500;
+      color: white;
+    }
+
+    .button-warning:hover {
+      background: #e67e00;
+      transform: translateY(-1px);
+    }
+
+    .button-danger {
+      background: #ff3b30;
+      color: white;
+    }
+
+    .button-danger:hover {
+      background: #d70015;
+      transform: translateY(-1px);
+    }
+
+    .button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    .status {
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 10px;
+      font-size: 14px;
+      text-align: center;
+      display: none;
+    }
+
+    .status.processing {
+      background: rgba(0, 122, 255, 0.1);
+      color: #007aff;
+      display: block;
+    }
+
+    .status.success {
+      background: rgba(52, 199, 89, 0.1);
+      color: #34c759;
+      display: block;
+    }
+
+    .status.error {
+      background: rgba(255, 59, 48, 0.1);
+      color: #ff3b30;
+      display: block;
+    }
+
+    .divider {
+      height: 1px;
+      background: #d2d2d7;
+      margin: 24px 0;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1d1d1f;
+      margin-bottom: 16px;
+    }
+
+    .icon {
+      width: 20px;
+      height: 20px;
+      margin-right: 8px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      font-size: 14px;
+      color: #1d1d1f;
+      margin: 0;
+      padding: 8px;
+      border-radius: 8px;
+      transition: background-color 0.2s ease;
+    }
+
+    .checkbox-label:hover {
+      background-color: rgba(0, 122, 255, 0.05);
+    }
+
+    .checkbox-label input[type="checkbox"] {
+      display: none;
+    }
+
+    .checkmark {
+      width: 18px;
+      height: 18px;
+      border: 2px solid #d2d2d7;
+      border-radius: 4px;
+      margin-right: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .checkbox-label input[type="checkbox"]:checked + .checkmark {
+      background-color: #007aff;
+      border-color: #007aff;
+    }
+
+    .checkbox-label input[type="checkbox"]:checked + .checkmark::after {
+      content: '';
+      width: 5px;
+      height: 10px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+  </style>
+  <script type="module" crossorigin src="./assets/index.f65509e6.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <h1 class="title">小红书数据采集</h1>
+      <p class="subtitle">批量采集小红书笔记数据并处理图片附件</p>
+    </div>
+
+    <form id="mainForm">
+      <div class="form-group">
+        <label for="tableSelect">选择数据表</label>
+        <select id="tableSelect">
+          <option value="">请选择数据表</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="columnSelect">选择笔记链接列</label>
+        <select id="columnSelect">
+          <option value="">请先选择数据表</option>
+        </select>
+        <small style="font-size: 12px; color: #86868b; margin-top: 4px; display: block;">
+          请选择包含小红书链接或笔记ID的列（文本或链接类型）
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label for="apiKey">API 密钥</label>
+        <input type="text" id="apiKey" placeholder="请输入 API 密钥">
+      </div>
+
+    <div class="form-group">
+        <label>选择要添加的字段</label>
+        <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+          <button type="button" class="button button-secondary" id="selectAllFields" style="flex: 1; padding: 6px 12px; font-size: 13px; min-height: auto;">
+            全选
+          </button>
+          <button type="button" class="button button-secondary" id="deselectAllFields" style="flex: 1; padding: 6px 12px; font-size: 13px; min-height: auto;">
+            反选
+          </button>
+        </div>
+        <div class="checkbox-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px;">
+          <label class="checkbox-label">
+            <input type="checkbox" name="fields" value="noteId" checked>
+            <span class="checkmark"></span>
+            <span>小红书链接/笔记ID</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" name="fields" value="authorNickname" checked>
+            <span class="checkmark"></span>
+            <span>作者昵称</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" name="fields" value="authorXhsId">
+            <span class="checkmark"></span>
+            <span>作者小红书号</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" name="fields" value="title" checked>
+            <span class="checkmark"></span>
+            <span>笔记标题</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" name="fields" value="description" checked>
+            <span class="checkmark"></span>
+            <span>笔记内容</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" name="fields" value="noteType">
+            <span class="checkmark"></span>
+            <span>笔记类型</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" name="fields" value="publishTime">
+            <span class="checkmark"></span>
+            <span>发布时间</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" name="fields" value="coverUrl" checked>
+            <span class="checkmark"></span>
+            <span>封面图</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" name="fields" value="images" checked>
+            <span class="checkmark"></span>
+            <span>图片列表</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" name="fields" value="videoUrl">
+            <span class="checkmark"></span>
+            <span>视频地址</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" name="fields" value="videoDuration">
+            <span class="checkmark"></span>
+            <span>视频时长</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" name="fields" value="tags">
+            <span class="checkmark"></span>
+            <span>标签</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" name="fields" value="likes">
+            <span class="checkmark"></span>
+            <span>点赞数</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" name="fields" value="collects">
+            <span class="checkmark"></span>
+            <span>收藏数</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" name="fields" value="shares">
+            <span class="checkmark"></span>
+            <span>转发数</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" name="fields" value="comments">
+            <span class="checkmark"></span>
+            <span>评论数</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" name="fields" value="soundUrl">
+            <span class="checkmark"></span>
+            <span>音频链接</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" name="fields" value="ipLocation">
+            <span class="checkmark"></span>
+            <span>发文地址</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>
+          <input type="checkbox" name="fields" value="errorMsg" checked disabled style="margin-right: 8px;">
+          提示信息（必选）
+        </label>
+        <small style="font-size: 12px; color: #86868b; margin-top: 4px; display: block;">
+          用于显示处理状态、错误信息或成功消息
+        </small>
+      </div>
+
+      <div class="divider"></div>
+
+  
+      <button type="button" class="button button-primary" id="processColumn" style="width: 100%;">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+        </svg>
+        开始处理
+      </button>
+
+      <button type="button" class="button button-danger" id="pauseProcess" style="display: none; width: 100%; margin-top: 12px;">
+        <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        暂停处理
+      </button>
+    </form>
+
+    <div id="status" class="status"></div>
+
+    <div class="disclaimer" style="margin-top: 32px; padding: 20px; background: rgba(0, 0, 0, 0.03); border-radius: 12px; font-size: 12px; color: #86868b; line-height: 1.6;">
+      <h4 style="margin: 0 0 12px 0; font-size: 14px; color: #666; font-weight: 500;">免责声明</h4>
+      <ul style="margin: 0; padding-left: 16px;">
+        <li>本工具仅作为个人数据管理工具，帮助用户整理和管理小红书平台上的个人收藏信息。</li>
+        <li>所有内容的版权归原作者及小红书平台所有，本工具仅提供索引和导出功能，不存储任何原始媒体内容。</li>
+        <li>用户导出的数据应仅用于个人学习、研究及合法合规的非商业用途。</li>
+        <li>可能会收取维护费用，用于持续改进和优化用户体验。</li>
+        <li>使用本工具即表示您已阅读并同意遵守平台服务条款，对使用行为负全部责任。</li>
+      </ul>
+    </div>
+  </div>
+
+  
+</body>
+
+</html>
