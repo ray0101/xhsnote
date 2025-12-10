@@ -924,27 +924,27 @@ $(document).ready(async function() {
                   const multiSelectField = await table.getField(tagsField);
 
                   // 获取现有选项
-                  const existingOptions = await multiSelectField.getOptions();
+                  const existingOptions = await (multiSelectField as any).getOptions();
                   console.log('Existing options:', existingOptions);
 
                   // 如果有提取到的话题，添加到选项列表
                   if (extractedTopics.length > 0) {
                     // 找出需要新增的话题
-                    const existingOptionNames = existingOptions.map(opt => opt.name);
+                    const existingOptionNames = existingOptions.map((opt: any) => opt.name);
                     const topicsToAdd = extractedTopics.filter(topic => !existingOptionNames.includes(topic));
 
                     // 添加新的话题选项
                     if (topicsToAdd.length > 0) {
                       console.log('Adding new options:', topicsToAdd);
-                      await multiSelectField.addOptions(topicsToAdd.map(topic => ({ name: topic })));
+                      await (multiSelectField as any).addOptions(topicsToAdd.map(topic => ({ name: topic })));
                     }
 
                     // 重新获取更新后的选项列表
-                    const updatedOptions = await multiSelectField.getOptions();
+                    const updatedOptions = await (multiSelectField as any).getOptions();
                     console.log('Updated options:', updatedOptions);
 
                     // 获取所有选项的ID
-                    const allOptionIds = updatedOptions.map(opt => opt.id);
+                    const allOptionIds = updatedOptions.map((opt: any) => opt.id);
                     console.log('All option IDs:', allOptionIds);
 
                     // 设置所有选项作为该单元格的值
@@ -953,7 +953,7 @@ $(document).ready(async function() {
                   } else {
                     // 如果没有提取到话题，但选项列表不为空，仍然设置所有选项
                     if (existingOptions.length > 0) {
-                      const allOptionIds = existingOptions.map(opt => opt.id);
+                      const allOptionIds = existingOptions.map((opt: any) => opt.id);
                       await multiSelectField.setValue(recordId, allOptionIds);
                       console.log(`Set existing ${allOptionIds.length} options for record ${recordId} (no new topics extracted)`);
                     }

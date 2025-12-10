@@ -14,19 +14,31 @@
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+      background: #fff;
       min-height: 100vh;
       padding: 20px;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, #ffeef2 0%, #ffe4e8 50%, #fff0f5 100%);
+      z-index: -1;
     }
 
     .container {
       max-width: 600px;
       margin: 0 auto;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(20px);
-      border-radius: 20px;
+      background: #ffffff;
+      border-radius: 16px;
       padding: 32px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 20px rgba(255, 105, 180, 0.08);
+      border: 1px solid rgba(255, 105, 180, 0.05);
     }
 
     .header {
@@ -37,13 +49,27 @@
     .title {
       font-size: 28px;
       font-weight: 600;
-      color: #1d1d1f;
+      color: #ff2442;
       margin-bottom: 8px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .title::before {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 10%;
+      right: 10%;
+      height: 3px;
+      background: linear-gradient(90deg, #ff2442 0%, #ff6b6b 100%);
+      border-radius: 2px;
     }
 
     .subtitle {
       font-size: 14px;
-      color: #86868b;
+      color: #999;
+      margin-top: 12px;
     }
 
     .form-group {
@@ -54,18 +80,28 @@
       display: block;
       font-size: 14px;
       font-weight: 500;
-      color: #1d1d1f;
+      color: #333;
       margin-bottom: 8px;
+      position: relative;
+    }
+
+    label::after {
+      content: '✨';
+      position: absolute;
+      right: 0;
+      top: 0;
+      font-size: 12px;
+      opacity: 0.6;
     }
 
     select, input[type="text"] {
       width: 100%;
       padding: 12px 16px;
-      border: 1px solid #d2d2d7;
-      border-radius: 10px;
-      font-size: 16px;
+      border: 2px solid #f0f0f0;
+      border-radius: 12px;
+      font-size: 15px;
       background: #ffffff;
-      transition: all 0.2s ease;
+      transition: all 0.3s ease;
       -webkit-appearance: none;
       appearance: none;
       cursor: pointer;
@@ -73,15 +109,20 @@
 
     select:focus, input[type="text"]:focus {
       outline: none;
-      border-color: #007aff;
-      box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+      border-color: #ff2442;
+      box-shadow: 0 0 0 4px rgba(255, 36, 66, 0.1);
+      transform: translateY(-1px);
+    }
+
+    select:hover, input[type="text"]:hover {
+      border-color: #ff6b6b;
     }
 
     select {
-      background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%2386868b' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 6L8 10L12 6' stroke='%23ff2442' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
       background-position: right 16px center;
-      padding-right: 44px;
+      padding-right: 48px;
     }
 
     .button-group {
@@ -94,111 +135,156 @@
     .button {
       padding: 12px 24px;
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
       font-size: 16px;
       font-weight: 500;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       display: inline-flex;
       align-items: center;
       justify-content: center;
       min-height: 48px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.5s;
+    }
+
+    .button:hover::before {
+      left: 100%;
     }
 
     .button-primary {
-      background: #007aff;
+      background: linear-gradient(135deg, #ff2442 0%, #ff6b6b 100%);
       color: white;
+      box-shadow: 0 4px 15px rgba(255, 36, 66, 0.3);
     }
 
     .button-primary:hover {
-      background: #0056b3;
-      transform: translateY(-1px);
+      box-shadow: 0 6px 25px rgba(255, 36, 66, 0.4);
+      transform: translateY(-2px);
     }
 
     .button-secondary {
-      background: #f2f2f7;
-      color: #007aff;
+      background: #fff;
+      color: #ff2442;
+      border: 2px solid #ff2442;
     }
 
     .button-secondary:hover {
-      background: #e5e5ea;
-      transform: translateY(-1px);
-    }
-
-    .button-success {
-      background: #34c759;
+      background: #ff2442;
       color: white;
-    }
-
-    .button-success:hover {
-      background: #28a745;
-      transform: translateY(-1px);
-    }
-
-    .button-warning {
-      background: #ff9500;
-      color: white;
-    }
-
-    .button-warning:hover {
-      background: #e67e00;
-      transform: translateY(-1px);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(255, 36, 66, 0.2);
     }
 
     .button-danger {
-      background: #ff3b30;
+      background: linear-gradient(135deg, #ff4757 0%, #ff6348 100%);
       color: white;
+      box-shadow: 0 4px 15px rgba(255, 71, 87, 0.3);
     }
 
     .button-danger:hover {
-      background: #d70015;
-      transform: translateY(-1px);
+      box-shadow: 0 6px 25px rgba(255, 71, 87, 0.4);
+      transform: translateY(-2px);
     }
 
     .button:disabled {
-      opacity: 0.5;
+      opacity: 0.6;
       cursor: not-allowed;
       transform: none !important;
+      box-shadow: none !important;
     }
 
     .status {
       margin-top: 20px;
       padding: 16px;
-      border-radius: 10px;
+      border-radius: 12px;
       font-size: 14px;
       text-align: center;
       display: none;
+      font-weight: 500;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .status::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
     }
 
     .status.processing {
-      background: rgba(0, 122, 255, 0.1);
-      color: #007aff;
+      background: linear-gradient(135deg, #fff5f7 0%, #ffeef0 100%);
+      color: #ff2442;
+      border: 1px solid #ff2442;
       display: block;
+    }
+
+    .status.processing::before {
+      background: linear-gradient(90deg, #ff2442 0%, #ff6b6b 100%);
     }
 
     .status.success {
-      background: rgba(52, 199, 89, 0.1);
-      color: #34c759;
+      background: linear-gradient(135deg, #f0fff4 0%, #e8f5e9 100%);
+      color: #52c41a;
+      border: 1px solid #52c41a;
       display: block;
     }
 
+    .status.success::before {
+      background: linear-gradient(90deg, #52c41a 0%, #73d13d 100%);
+    }
+
     .status.error {
-      background: rgba(255, 59, 48, 0.1);
-      color: #ff3b30;
+      background: linear-gradient(135deg, #fff1f0 0%, #ffebe8 100%);
+      color: #ff4d4f;
+      border: 1px solid #ff4d4f;
       display: block;
+    }
+
+    .status.error::before {
+      background: linear-gradient(90deg, #ff4d4f 0%, #ff7875 100%);
     }
 
     .divider {
       height: 1px;
-      background: #d2d2d7;
+      background: linear-gradient(90deg, transparent 0%, #ff2442 50%, transparent 100%);
       margin: 24px 0;
+      opacity: 0.3;
     }
 
     .section-title {
       font-size: 18px;
       font-weight: 600;
-      color: #1d1d1f;
+      color: #333;
       margin-bottom: 16px;
+      position: relative;
+      padding-left: 12px;
+    }
+
+    .section-title::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 4px;
+      height: 20px;
+      background: linear-gradient(180deg, #ff2442 0%, #ff6b6b 100%);
+      border-radius: 2px;
     }
 
     .icon {
@@ -214,15 +300,20 @@
       align-items: center;
       cursor: pointer;
       font-size: 14px;
-      color: #1d1d1f;
+      color: #555;
       margin: 0;
-      padding: 8px;
-      border-radius: 8px;
-      transition: background-color 0.2s ease;
+      padding: 12px;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      background: #fff;
+      border: 2px solid #f0f0f0;
     }
 
     .checkbox-label:hover {
-      background-color: rgba(0, 122, 255, 0.05);
+      background: #fff5f7;
+      border-color: #ff6b6b;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(255, 107, 107, 0.1);
     }
 
     .checkbox-label input[type="checkbox"] {
@@ -230,33 +321,42 @@
     }
 
     .checkmark {
-      width: 18px;
-      height: 18px;
-      border: 2px solid #d2d2d7;
-      border-radius: 4px;
-      margin-right: 8px;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #ff6b6b;
+      border-radius: 6px;
+      margin-right: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.2s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       flex-shrink: 0;
+      position: relative;
     }
 
     .checkbox-label input[type="checkbox"]:checked + .checkmark {
-      background-color: #007aff;
-      border-color: #007aff;
+      background: linear-gradient(135deg, #ff2442 0%, #ff6b6b 100%);
+      border-color: #ff2442;
+      transform: scale(1.1);
     }
 
     .checkbox-label input[type="checkbox"]:checked + .checkmark::after {
       content: '';
-      width: 5px;
-      height: 10px;
+      width: 6px;
+      height: 12px;
       border: solid white;
       border-width: 0 2px 2px 0;
       transform: rotate(45deg);
+      animation: checkmarkAnimation 0.3s ease;
+    }
+
+    @keyframes checkmarkAnimation {
+      0% { transform: rotate(45deg) scale(0); }
+      50% { transform: rotate(45deg) scale(1.2); }
+      100% { transform: rotate(45deg) scale(1); }
     }
   </style>
-  <script type="module" crossorigin src="./assets/index.f65509e6.js"></script>
+  <script type="module" crossorigin src="./assets/index.3f1e1052.js"></script>
 </head>
 
 <body>
@@ -264,6 +364,29 @@
     <div class="header">
       <h1 class="title">小红书数据采集</h1>
       <p class="subtitle">批量采集小红书笔记数据并处理图片附件</p>
+    </div>
+
+    <!-- 用户信息固定在页面顶部 -->
+    <div class="form-group" id="userInfo" style="display: none; background: linear-gradient(135deg, #fff5f7 0%, #ffeef0 100%); padding: 16px; border-radius: 12px; border: 1px solid rgba(255, 107, 107, 0.2); margin-bottom: 24px;">
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px;">
+        <div>
+          <div style="font-size: 12px; color: #666; margin-bottom: 4px;">用户</div>
+          <div id="userName" style="font-size: 16px; font-weight: 500; color: #ff2442;"></div>
+        </div>
+        <div style="width: 1px; height: 40px; background: rgba(255, 107, 107, 0.2);"></div>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div>
+            <div style="font-size: 12px; color: #666; margin-bottom: 4px;">剩余次数</div>
+            <div id="remainDownload" style="font-size: 18px; font-weight: 600; color: #ff2442;"></div>
+          </div>
+          <button id="rechargeBtn" style="padding: 8px 16px; background: linear-gradient(135deg, #ff2442 0%, #ff6b6b 100%); color: white; border: none; border-radius: 8px; font-size: 12px; cursor: pointer; transition: all 0.3s ease; white-space: nowrap; display: flex; align-items: center; gap: 4px;">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2L12 20M12 6L12 8M12 14L12 16M21 12H3"></path>
+            </svg>
+            充值
+          </button>
+        </div>
+      </div>
     </div>
 
     <form id="mainForm">
@@ -282,11 +405,6 @@
         <small style="font-size: 12px; color: #86868b; margin-top: 4px; display: block;">
           请选择包含小红书链接或笔记ID的列（文本或链接类型）
         </small>
-      </div>
-
-      <div class="form-group">
-        <label for="apiKey">API 密钥</label>
-        <input type="text" id="apiKey" placeholder="请输入 API 密钥">
       </div>
 
     <div class="form-group">
@@ -358,7 +476,7 @@
           <label class="checkbox-label">
             <input type="checkbox" name="fields" value="tags">
             <span class="checkmark"></span>
-            <span>标签</span>
+            <span>话题列表</span>
           </label>
           <label class="checkbox-label">
             <input type="checkbox" name="fields" value="likes">
@@ -423,16 +541,75 @@
 
     <div id="status" class="status"></div>
 
-    <div class="disclaimer" style="margin-top: 32px; padding: 20px; background: rgba(0, 0, 0, 0.03); border-radius: 12px; font-size: 12px; color: #86868b; line-height: 1.6;">
-      <h4 style="margin: 0 0 12px 0; font-size: 14px; color: #666; font-weight: 500;">免责声明</h4>
-      <ul style="margin: 0; padding-left: 16px;">
-        <li>本工具仅作为个人数据管理工具，帮助用户整理和管理小红书平台上的个人收藏信息。</li>
-        <li>所有内容的版权归原作者及小红书平台所有，本工具仅提供索引和导出功能，不存储任何原始媒体内容。</li>
-        <li>用户导出的数据应仅用于个人学习、研究及合法合规的非商业用途。</li>
-        <li>可能会收取维护费用，用于持续改进和优化用户体验。</li>
-        <li>使用本工具即表示您已阅读并同意遵守平台服务条款，对使用行为负全部责任。</li>
+    <div class="disclaimer" style="margin-top: 32px; padding: 24px; background: linear-gradient(135deg, #fff5f7 0%, #ffeef0 100%); border-radius: 16px; font-size: 12px; color: #666; line-height: 1.8; border: 1px solid rgba(255, 107, 107, 0.2);">
+      <h4 style="margin: 0 0 16px 0; font-size: 16px; color: #ff2442; font-weight: 600; display: flex; align-items: center;">
+        <span style="margin-right: 8px;">💝</span> 温馨提示
+      </h4>
+      <ul style="margin: 0; padding-left: 20px; list-style: none;">
+        <li style="margin-bottom: 8px; position: relative; padding-left: 20px;">
+          <span style="position: absolute; left: 0; color: #ff2442;">♥</span>
+          本工具仅作为个人数据管理工具，帮助用户整理和管理小红书平台上的个人收藏信息
+        </li>
+        <li style="margin-bottom: 8px; position: relative; padding-left: 20px;">
+          <span style="position: absolute; left: 0; color: #ff2442;">♥</span>
+          所有内容的版权归原作者及小红书平台所有，本工具仅提供索引和导出功能
+        </li>
+        <li style="margin-bottom: 8px; position: relative; padding-left: 20px;">
+          <span style="position: absolute; left: 0; color: #ff2442;">♥</span>
+          用户导出的数据应仅用于个人学习、研究及合法合规的非商业用途
+        </li>
+        <li style="margin-bottom: 8px; position: relative; padding-left: 20px;">
+          <span style="position: absolute; left: 0; color: #ff2442;">♥</span>
+          可能会收取维护费用，用于持续改进和优化用户体验
+        </li>
+        <li style="position: relative; padding-left: 20px;">
+          <span style="position: absolute; left: 0; color: #ff2442;">♥</span>
+          使用本工具即表示您已阅读并同意遵守平台服务条款，对使用行为负全部责任
+        </li>
       </ul>
     </div>
+
+    <!-- 加载动画 -->
+    <div id="loadingOverlay" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; z-index: 9999; visibility: hidden; opacity: 0; transition: all 0.3s ease;">
+      <div style="text-align: center;">
+        <div style="width: 60px; height: 60px; border: 4px solid #f3f3f3; border-top: 4px solid #ff2442; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
+        <div style="color: #ff2442; font-size: 16px; font-weight: 500;">正在验证授权...</div>
+      </div>
+    </div>
+
+    <!-- 右下角悬浮按钮 -->
+    <div style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">
+      <!-- 交流群按钮 -->
+      <div style="margin-bottom: 12px;">
+        <a href="https://applink.feishu.cn/client/chat/chatter/add_by_link?link_token=7bcr4ca7-7641-4cca-841f-dc775146b9fc"
+           target="_blank"
+           style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; background: linear-gradient(135deg, #ff2442 0%, #ff6b6b 100%); color: white; text-decoration: none; border-radius: 25px; font-size: 14px; font-weight: 500; box-shadow: 0 4px 15px rgba(255, 36, 66, 0.3); transition: all 0.3s ease; white-space: nowrap;">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+          </svg>
+          交流群
+        </a>
+      </div>
+
+      <!-- 技术支持按钮 -->
+      <div>
+        <a href="https://www.feishu.cn/invitation/page/add_contact/?token=45eve26c-d66e-49c6-865d-901b170ddf58&unique_id=Jp3RoBgHNMTqhqpBevBUaQ=="
+           target="_blank"
+           style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; background: white; color: #ff2442; text-decoration: none; border: 2px solid #ff2442; border-radius: 25px; font-size: 14px; font-weight: 500; box-shadow: 0 4px 15px rgba(255, 36, 66, 0.2); transition: all 0.3s ease; white-space: nowrap;">
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path>
+          </svg>
+          联系技术支持
+        </a>
+      </div>
+    </div>
+
+    <style>
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    </style>
   </div>
 
   
